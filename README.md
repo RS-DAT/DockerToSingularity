@@ -33,7 +33,7 @@ The next step is to convert a Docker container to a Singularity Image Format (SI
 docker save np_mat_sum -o np_mat_sum.tar
 ```
 
-Then you need to expose the `tar` file to Singularity. Singularity uses the path in the format of `docker-archive://<path_to_the_tar>`. If you are using a Unix-like system you can just fill in the current directory. This example, on the other hand, is tested on WSL. Therefore to expose the `tar` file to Singularity, we can move the `tar` file to `/tmp`:
+Then you need to expose the `tar` file to Singularity. Singularity uses the path in the format of `docker-archive://<path_to_the_tar>`. If you are using a Unix-like system you can just fill in the absolute path of the `tar` file in current directory. This example, on the other hand, is tested on WSL. Therefore to expose the `tar` file to Singularity, we can move the `tar` file to `/tmp`:
 
 ```sh
 mv np_mat_sum.tar /tmp/np_mat_sum.tar 
