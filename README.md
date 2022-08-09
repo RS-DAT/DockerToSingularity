@@ -57,6 +57,13 @@ After building the SIF file locally, one can directly execute the Python script 
 singularity run np_mat_sum.sif
 ```
 
+It should give:
+
+```
+Output: [[1. 2.]
+ [3. 4.]]
+```
+
 ### On Snellius
 
 To run the SIF on Snellius, you need to first upload `np_mat_sum.sif` and `mat_sum.py` to the same diretory on Snellius.
@@ -78,3 +85,13 @@ Then we can execute this SIF by:
 ```sh
 singularity run np_mat_sum.sif
 ```
+
+## On Spider
+
+One can execute SIF directly on the login node of Spider:
+
+```sh
+singularity run np_mat_sum.sif
+```
+
+To do this properly, the Singularity should be executed as a SLURM job. See the [documentation](http://doc.spider.surfsara.nl/en/latest/Pages/software_on_spider.html#singularity-in-batch-jobs).
