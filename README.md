@@ -3,7 +3,7 @@ Examples of converting a docker image to singularity, and execute the singularit
 
 In this repository, we give an example of how to convert a Docker image to a Singularity Image Format (SIF) file. 
 
-We will imagine the following scenario as a simple test case: someone created a `Dockerfile` to build a Docker enviroment. In this environment,the `numpy` module is installed by `conda`. This environment can be used to run a Python script `mat_sum.py`, where a matrix addition will be performed. Later this person would like to execute this Docker environment on a HPC environment, e.g.Snellius, where Docker is not available. So this person needs to convert this Docker image to a SIF before execution. 
+Imagine the following scenario as a simple test case: someone created a `Dockerfile` to build a Docker enviroment. In this environment,the `numpy` module is installed by `conda`. This environment can be used to run a Python script `mat_sum.py` which performs matrix addition. Later this person would like to execute this Docker environment on a HPC environment, e.g. Snellius, where Docker is not available. So this person needs to convert this Docker image to a SIF before execution. 
 ## Preparation
 
 To set up this test case, we will clone this repository:
@@ -33,19 +33,19 @@ The next step is to convert a Docker container to a Singularity Image Format (SI
 docker save np_mat_sum -o np_mat_sum.tar
 ```
 
-Then you need to expose the `tar` file to Singularity. Singularity uses the path in the format of `docker-archive://<path_to_the_tar>`. If you are using a Unix-like system you can just fill in the absolute path of the `tar` file in current directory. This example, on the other hand, is tested on WSL. Therefore to expose the `tar` file to Singularity, we can move the `tar` file to `/tmp`:
+Then you need to expose the `tar` file to Singularity. Singularity uses the path in the format of `docker-archive://<path_to_the_tar>`. If you are using a Unix-like system you can fill in the absolute path of the `tar` file in current directory. This example, on the other hand, is tested on WSL. Therefore to expose the `tar` file to Singularity, we can move the `tar` file to `/tmp`:
 
 ```sh
 mv np_mat_sum.tar /tmp/np_mat_sum.tar 
 ```
 
-Then the Singularity can build the SIF file from the `tar`.
+Then Singularity can build the SIF file from the `tar` file.
 
 ```sh
 sudo singularity build np_mat_sum.sif docker-archive:///tmp/np_mat_sum.tar
 ```
 
-Note that singularty can also build SIF directly from the DockerHub, which may also be a common practice. See the [documentation of Singularity](https://docs.sylabs.io/guides/3.0/user-guide/build_a_container.html).
+Note that singularity can also build SIF directly from the DockerHub, which may also be a common practice. See the [documentation of Singularity](https://docs.sylabs.io/guides/3.0/user-guide/build_a_container.html).
 
 ## Execute the SIF file
 
@@ -84,6 +84,22 @@ Then we can execute this SIF by:
 
 ```sh
 singularity run np_mat_sum.sif
+```
+
+Alternatively, the singularity container can also be run on snellius as a batch job. A sample script (`batch_singularity.sh`) to run the container with 1 task for 1 hour is:
+
+```sh
+#!/bin/bash
+#SBATCH -t 1:00:00
+#SBATCH -n 1
+
+singularity run np_mat_sum.sif
+```
+
+The script can be run on snellius (for more information, refer to the Snellius HPC User Guide at https://servicedesk.surf.nl/wiki/display/WIKI/HPC+User+Guide) as:
+
+```sh
+sbatch batch_singularity.sh
 ```
 
 ## On Spider
